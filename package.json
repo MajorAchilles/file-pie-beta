@@ -1,0 +1,25 @@
+{
+  "name": "file-pie",
+  "version": "1.0.0",
+  "description": "An electron based app that displays the storage used by files and folders in your system in a graphical interactive interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MajorAchilles/file-pie.git"
+  },
+  "keywords": [
+    "Electron",
+    "File",
+    "Size",
+    "GUI"
+  ],
+  "author": "Amlanjyoti Saikia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MajorAchilles/file-pie/issues"
+  },
+  "homepage": "https://github.com/MajorAchilles/file-pie#readme"
+}
