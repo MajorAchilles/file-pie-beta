@@ -1,14 +1,12 @@
 const COMMANDS = require("./commandList");
 const runCommand = require("./runCommand");
+const CONSTANTS = require("../../constants");
 
-/**
- * This enum contains the list of supported operating systems.
- */
-const OS = {
-    LINUX: "linux",
-    MAC: "darwin",
-    WINDOWS: "win32"
-};
+const {
+    ENUMS: {
+        OS
+    }
+} = CONSTANTS;
 
 /**
  * This function runs the given command appropriate for the current operating system.
