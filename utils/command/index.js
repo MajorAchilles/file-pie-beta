@@ -16,8 +16,10 @@ const OS = {
  */
 const execute = (command) => {
     switch(process.platform) {
-        case OS.LINUX:
+        case OS.WINDOWS:
             return runCommand(require("./windowsCommands")[command]);
+        case OS.LINUX:
+            return runCommand(require("./linuxCommands")[command]);
         default:
             return Promise.reject(new Error(`The current operating system, ${process.platform} is not supported yet!`));
     }

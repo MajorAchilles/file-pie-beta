@@ -18,7 +18,9 @@ module.exports = (command) => new Promise(
 
             resolve({
                 stdout,
-                stderr
+                stderr,
+                command,
+                platform: process.platform
             });
         });
     }
