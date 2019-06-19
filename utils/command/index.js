@@ -11,6 +11,7 @@ const {
 /**
  * This function runs the given command appropriate for the current operating system.
  * @param {String} command The command to be executed.
+ * @returns {Promise<Object>} A promise that resolves once the command is complete or errors out.
  */
 const execute = (command) => {
     switch(process.platform) {

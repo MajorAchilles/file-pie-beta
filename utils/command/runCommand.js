@@ -13,7 +13,11 @@ module.exports = (command) => new Promise(
 
         exec(command, (error, stdout, stderr) => {
             if (error) {
-                reject(error);
+                reject({
+                    error,
+                    command,
+                    platform: process.platform
+                });
             }
 
             resolve({
