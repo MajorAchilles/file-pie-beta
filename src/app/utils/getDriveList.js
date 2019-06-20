@@ -3,6 +3,7 @@ const {
     execute
 } = require("./command");
 const CONSTANTS = require("../constants");
+
 const {
     ENUMS: {
         OS
@@ -14,7 +15,7 @@ const {
  * @param {Object} output The output object returned on running the command
  * @returns {Object} The output object with stdout containing the formatted output
  */
-const formatLinuxOutput = output => {
+const formatLinuxOutput = (output) => {
     const driveRows = output.stdout.split("\n").slice(1).filter(row => row.length).map(row => row.split(" ")[0]);
 
     return Object.assign({}, output, { stdout: driveRows });
@@ -25,7 +26,7 @@ const formatLinuxOutput = output => {
  * @param {Object} output The output object returned on running the command
  * @returns {Object} The output object with stdout containing the formatted output
  */
-const formatWindowsOutput = output => {
+const formatWindowsOutput = (output) => {
     const driveRows = output.stdout.split("\r\r\n").slice(1).filter(row => row.length).map(row => row.split(" ")[0]);
 
     return Object.assign({}, output, { stdout: driveRows });
@@ -37,11 +38,12 @@ const formatWindowsOutput = output => {
  */
 const list = async () => {
     const output = await execute(COMMANDS.GET_DRIVE_LIST);
+
     if (output.platform === OS.WINDOWS) {
         return formatWindowsOutput(output);
-    } else {
-        return formatLinuxOutput(output);
     }
+
+    return formatLinuxOutput(output);
 };
 
 module.exports = {

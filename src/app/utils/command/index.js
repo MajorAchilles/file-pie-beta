@@ -1,6 +1,8 @@
 const COMMANDS = require("./commandList");
 const runCommand = require("./runCommand");
 const CONSTANTS = require("../../constants");
+const windowsCommands = require("./windowsCommands");
+const linuxCommands = require("./linuxCommands");
 
 const {
     ENUMS: {
@@ -14,11 +16,11 @@ const {
  * @returns {Promise<Object>} A promise that resolves once the command is complete or errors out.
  */
 const execute = (command) => {
-    switch(process.platform) {
+    switch (process.platform) {
         case OS.WINDOWS:
-            return runCommand(require("./windowsCommands")[command]);
+            return runCommand(windowsCommands[command]); // eslint-disable-line
         case OS.LINUX:
-            return runCommand(require("./linuxCommands")[command]);
+            return runCommand(linuxCommands[command]);
         default:
             return Promise.reject(new Error(`The current operating system, ${process.platform} is not supported yet!`));
     }

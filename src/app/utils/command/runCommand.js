@@ -5,7 +5,7 @@ const { exec } = require("child_process");
  * @param {String} command The command to be executed
  * @returns {Promise<ArrayBuffer|Error>} The output stream containing the results of running the command as a buffer.
  */
-module.exports = (command) => new Promise(
+module.exports = command => new Promise(
     (resolve, reject) => {
         if (!command) {
             reject(new Error("Command is empty."));
@@ -13,7 +13,7 @@ module.exports = (command) => new Promise(
 
         exec(command, (error, stdout, stderr) => {
             if (error) {
-                reject({
+                reject({ // eslint-disable-line prefer-promise-reject-errors
                     error,
                     command,
                     platform: process.platform

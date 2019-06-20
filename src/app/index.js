@@ -1,10 +1,13 @@
-const electron = require("electron")
+const electron = require("electron"); // eslint-disable-line import/no-unresolved
 const getDriveList = require("./utils/getDriveList");
 const EVENTS = require("./constants/events");
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
 
-let mainWindow
+const {
+    app,
+    BrowserWindow
+} = electron;
+
+let mainWindow;
 
 app.on(EVENTS.ELECTRON.READY, () => {
     // Create the browser window.
@@ -12,14 +15,14 @@ app.on(EVENTS.ELECTRON.READY, () => {
 
     getDriveList.list()
         .then((list) => {
-            console.log(list);
+            console.log(list); // eslint-disable-line no-console
             // Load the index.html of the app.
             mainWindow.loadURL(`file://${__dirname}/index.html`);
 
             // mainWindow.webContents.openDevTools()
 
             // Emitted when the window is closed.
-            mainWindow.on(EVENTS.ELECTRON.CLOSED, () => mainWindow = null);
+            mainWindow.on(EVENTS.ELECTRON.CLOSED, () => { mainWindow = null; });
         })
         .catch(error => app.emit(EVENTS.FILEPIE.OS_NOT_SUPPORTED, error));
 });
