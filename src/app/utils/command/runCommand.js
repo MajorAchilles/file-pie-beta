@@ -1,4 +1,5 @@
 const { exec } = require("child_process");
+const i18n = require("../../i18n/locale-en");
 
 /**
  * This function runs the given command as a child process that returns a buffer
@@ -8,7 +9,7 @@ const { exec } = require("child_process");
 module.exports = command => new Promise(
     (resolve, reject) => {
         if (!command) {
-            reject(new Error("Command is empty."));
+            reject(new Error(i18n.app.errors.EMPTY_COMMAND));
         }
 
         exec(command, (error, stdout, stderr) => {
