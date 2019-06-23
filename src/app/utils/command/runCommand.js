@@ -33,4 +33,4 @@ const runCommand = command => new Promise(
 
 module.exports = {
     runCommand
-}
+};

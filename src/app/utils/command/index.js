@@ -1,8 +1,9 @@
 const COMMANDS = require("./commandList");
-const runCommand = require("./runCommand").runCommand;
+const { runCommand } = require("./runCommand");
 const CONSTANTS = require("../../constants");
 const windowsCommands = require("./windowsCommands");
 const linuxCommands = require("./linuxCommands");
+const i18n = require("../../i18n/locale-en");
 
 const {
     ENUMS: {
@@ -22,7 +23,7 @@ const execute = (command) => {
         case OS.LINUX:
             return runCommand(linuxCommands[command]);
         default:
-            return Promise.reject(new Error(`The current operating system, ${process.platform} is not supported yet!`));
+            return Promise.reject(new Error(i18n.app.errors.SYSTEM_NOT_SUPPORTED));
     }
 };
 

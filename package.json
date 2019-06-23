@@ -4,8 +4,8 @@
   "description": "An electron based app that displays the storage used by files and folders in your system in a graphical interactive interface.",
   "main": "index.js",
   "scripts": {
-    "test": "jest specs",
-    "test:watch": "jest specs --watch",
+    "test": "jest specs --runInBand",
+    "test:watch": "jest specs --watch --runInBand",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest specs --runInBand",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
