@@ -1,4 +1,4 @@
-const runCommand = require("../../../../../src/app/utils/command/runCommand");
+const runCommand = require("../../../../../src/app/utils/command/runCommand").runCommand;
 const i18n = require("../../../../../src/app/i18n/locale-en");
 
 jest.mock("child_process");
@@ -47,35 +47,40 @@ describe("The runCommand function", () => {
                 }, 100);
             });
 
-            it("rejects the promise if the command errors out", (done) => {
+            xit("rejects the promise if the command errors out", (done) => {
                 debugger;
                 const ERROR = "ERROR";
                 execSpy.mockImplementation(() => {
                     callback(ERROR);
                 });
 
-                // expect(() => {
-                //     runCommand(MOCK_COMMAND).then(() => {}).catch(() => {});
-                // }).toThrow({
-                //     error: ERROR,
-                //     command: MOCK_COMMAND,
-                //     platform: process.platform
-                // })
+                return runCommand(MOCK_COMMAND)
+                    .catch((errorObject) => {
+                        expect(errorObject).toBe({
+                            error: ERROR,
+                            command: MOCK_COMMAND,
+                            platform: process.platform
+                        });
+                        done();
+                    });
+            });
 
-                expect(async () => {
-                    await runCommand(MOCK_COMMAND);
-                    expect(true).toBe(false);
-                }).toThrow();
+            xit("resolves it otherwise", (done) => {
+                const ERROR = "ERROR";
+                execSpy.mockImplementation(() => {
+                    callback(null, "STDOUT", "STDERR");
+                });
 
-                // return runCommand(MOCK_COMMAND)
-                //     .catch((errorObject) => {
-                //         expect(errorObject).toBe({
-                //             error: ERROR,
-                //             command: MOCK_COMMAND,
-                //             platform: process.platform
-                //         });
-                //         done();
-                //     });
+                runCommand(MOCK_COMMAND)
+                    .then((resolvedObject) => {
+                        expect(resolvedObject).toBe({
+                            stdout: "STDOUT",
+                            stderr: "STDERR",
+                            command: MOCK_COMMAND,
+                            platform: process.platform
+                        });
+                        done();
+                    });
             });
         });
     });

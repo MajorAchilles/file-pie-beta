@@ -1,5 +1,5 @@
 const COMMANDS = require("./commandList");
-const runCommand = require("./runCommand");
+const runCommand = require("./runCommand").runCommand;
 const CONSTANTS = require("../../constants");
 const windowsCommands = require("./windowsCommands");
 const linuxCommands = require("./linuxCommands");

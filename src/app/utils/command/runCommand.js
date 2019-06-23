@@ -6,7 +6,7 @@ const i18n = require("../../i18n/locale-en");
  * @param {String} command The command to be executed
  * @returns {Promise<ArrayBuffer|Error>} The output stream containing the results of running the command as a buffer.
  */
-module.exports = command => new Promise(
+const runCommand = command => new Promise(
     (resolve, reject) => {
         if (!command) {
             reject(new Error(i18n.app.errors.EMPTY_COMMAND));
@@ -30,3 +30,7 @@ module.exports = command => new Promise(
         });
     }
 );
+
+module.exports = {
+    runCommand
+}
