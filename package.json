@@ -2,7 +2,7 @@
   "name": "file-pie",
   "version": "1.0.0",
   "description": "An electron based app that displays the storage used by files and folders in your system in a graphical interactive interface.",
-  "main": "index.js",
+  "main": "src/app/index.js",
   "scripts": {
     "test": "jest specs --runInBand",
     "test:watch": "jest specs --watch --runInBand",
