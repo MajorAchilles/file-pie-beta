@@ -1,4 +1,5 @@
-const runCommand = require("../../../../../src/app/utils/command/runCommand").runCommand;
+const childProcess = require("child_process");
+const { runCommand } = require("../../../../../src/app/utils/command/runCommand");
 const i18n = require("../../../../../src/app/i18n/locale-en");
 
 jest.mock("child_process");
@@ -7,7 +8,7 @@ describe("The runCommand function", () => {
     const MOCK_COMMAND = "ls";
     let execSpy;
     beforeEach(() => {
-        execSpy = jest.spyOn(require("child_process"), "exec").mockImplementation(() => {
+        execSpy = jest.spyOn(childProcess, "exec").mockImplementation(() => {
             return Promise.resolve();
         });
     });
@@ -42,13 +43,12 @@ describe("The runCommand function", () => {
             beforeEach((done) => {
                 runCommand(MOCK_COMMAND);
                 setTimeout(() => {
-                    callback = execSpy.mock.calls[execSpy.mock.calls.length - 1][1];
+                    callback = execSpy.mock.calls[execSpy.mock.calls.length - 1][1]; // eslint-disable-line prefer-destructuring
                     done();
                 }, 100);
             });
 
             xit("rejects the promise if the command errors out", (done) => {
-                debugger;
                 const ERROR = "ERROR";
                 execSpy.mockImplementation(() => {
                     callback(ERROR);
@@ -66,7 +66,6 @@ describe("The runCommand function", () => {
             });
 
             xit("resolves it otherwise", (done) => {
-                const ERROR = "ERROR";
                 execSpy.mockImplementation(() => {
                     callback(null, "STDOUT", "STDERR");
                 });

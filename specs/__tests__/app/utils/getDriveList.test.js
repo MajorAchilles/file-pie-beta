@@ -1,87 +1,56 @@
-// const runCommand = require("../../../../../src/app/utils/command/runCommand").runCommand;
-// const i18n = require("../../../../../src/app/i18n/locale-en");
+const {
+    ENUMS: { OS }
+} = require("../../../../src/app/constants");
+const command = require("../../../../src/app/utils/command");
 
-// jest.mock("child_process");
+describe("The runCommand function", () => {
+    let list;
+    let executeSpy;
+    beforeEach(() => {
+        executeSpy = jest.spyOn(command, "execute").mockImplementation(() => {
+            return Promise.resolve({
+                platform: OS.WINDOWS,
+                stdout: "FIRSTROW\r\r\nC: SOME_SIZE SOME_TYPE\r\r\nD: ANOTER_SIZE ANOTHER_TYPE"
+            });
+        });
+        const { list: listFunction }  = require("../../../../src/app/utils/getDriveList");
+        list = listFunction;
+    });
 
-// describe("The runCommand function", () => {
-//     const MOCK_COMMAND = "ls";
-//     let execSpy;
-//     beforeEach(() => {
-//         execSpy = jest.spyOn(require("child_process"), "exec").mockImplementation(() => {
-//             return Promise.resolve();
-//         });
-//     });
+    it("should exist", () => {
+        expect(list).toBeDefined();
+        expect(list).toBeInstanceOf(Function);
+    });
 
-//     it("should exist", () => {
-//         expect(runCommand).toBeDefined();
-//     });
+    it("returns a Promise", () => {
+        expect(list()).toBeInstanceOf(Promise);
+    });
 
-//     it("returns a Promise", () => {
-//         expect(runCommand(MOCK_COMMAND)).toBeInstanceOf(Promise);
-//     });
+    describe("which", () => {
+        it("returns a list of drive letters if the platform is windows", (done) => {
+            return list().then((value) => {
+                expect(value).toEqual({
+                    platform: OS.WINDOWS,
+                    stdout: ["C:", "D:"]
+                });
+                done();
+            });
+        });
 
-//     describe("which", () => {
-//         it("is rejected if no command is provided", (done) => {
-//             return runCommand().catch((value) => {
-//                 expect(value).toBeInstanceOf(Error);
-//                 expect(value.message).toBe(i18n.app.errors.EMPTY_COMMAND);
-//                 done();
-//             });
-//         });
-
-//         it("executes the given command as a child process", (done) => {
-//             runCommand(MOCK_COMMAND);
-//             setTimeout(() => {
-//                 expect(execSpy).toHaveBeenCalledWith(MOCK_COMMAND, expect.any(Function));
-//                 done();
-//             }, 100);
-//         });
-
-//         describe("the exec callback", () => {
-//             let callback;
-//             beforeEach((done) => {
-//                 runCommand(MOCK_COMMAND);
-//                 setTimeout(() => {
-//                     callback = execSpy.mock.calls[execSpy.mock.calls.length - 1][1];
-//                     done();
-//                 }, 100);
-//             });
-
-//             xit("rejects the promise if the command errors out", (done) => {
-//                 debugger;
-//                 const ERROR = "ERROR";
-//                 execSpy.mockImplementation(() => {
-//                     callback(ERROR);
-//                 });
-
-//                 return runCommand(MOCK_COMMAND)
-//                     .catch((errorObject) => {
-//                         expect(errorObject).toBe({
-//                             error: ERROR,
-//                             command: MOCK_COMMAND,
-//                             platform: process.platform
-//                         });
-//                         done();
-//                     });
-//             });
-
-//             xit("resolves it otherwise", (done) => {
-//                 const ERROR = "ERROR";
-//                 execSpy.mockImplementation(() => {
-//                     callback(null, "STDOUT", "STDERR");
-//                 });
-
-//                 runCommand(MOCK_COMMAND)
-//                     .then((resolvedObject) => {
-//                         expect(resolvedObject).toBe({
-//                             stdout: "STDOUT",
-//                             stderr: "STDERR",
-//                             command: MOCK_COMMAND,
-//                             platform: process.platform
-//                         });
-//                         done();
-//                     });
-//             });
-//         });
-//     });
-// });
+        it("returns a list of disk labels if the platform is linux", (done) => {
+            executeSpy = jest.spyOn(command, "execute").mockImplementation(() => {
+                return Promise.resolve({
+                    platform: OS.LINUX,
+                    stdout: "FIRSTROW\ndev/sda1 SOME_SIZE SOME_TYPE\ndev/sda2 ANOTER_SIZE ANOTHER_TYPE"
+                });
+            });
+            return list().then((value) => {
+                expect(value).toEqual({
+                    platform: OS.LINUX,
+                    stdout: ["dev/sda1", "dev/sda2"]
+                });
+                done();
+            });
+        });
+    });
+});
