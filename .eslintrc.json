@@ -1,0 +1,6 @@
+{
+    "extends": "amlan",
+    "env": {
+        "jest": true
+    }
+}
