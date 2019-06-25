@@ -14,8 +14,6 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 const loadDriveList = () => {
     list()
         .then((driveList) => {
-            console.log(driveList);
-            console.log("Sending event to webContents", EVENTS.FILEPIE.DRIVE_LIST_RECEIVED);
             mainWindow.webContents.send(EVENTS.FILEPIE.DRIVE_LIST_RECEIVED, driveList);
         })
         .catch((errorObject) => {
