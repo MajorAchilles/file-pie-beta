@@ -1,5 +1,5 @@
 const electron = require("electron"); // eslint-disable-line import/no-unresolved
-const getDriveList = require("./utils/getDriveList");
+const { list } = require("./utils/getDriveList");
 const EVENTS = require("./constants/events");
 
 const {
@@ -8,23 +8,33 @@ const {
 } = electron;
 
 let mainWindow;
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
+
+
+const loadDriveList = () => {
+    list()
+        .then((driveList) => {
+            console.log(driveList);
+            console.log("Sending event to webContents", EVENTS.FILEPIE.DRIVE_LIST_RECEIVED);
+            mainWindow.webContents.send(EVENTS.FILEPIE.DRIVE_LIST_RECEIVED, driveList);
+        })
+        .catch((errorObject) => {
+            app.emit(EVENTS.FILEPIE.OS_NOT_SUPPORTED, errorObject);
+        });
+};
 
 app.on(EVENTS.ELECTRON.READY, () => {
     // Create the browser window.
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
 
-    getDriveList.list()
-        .then((list) => {
-            console.log(list); // eslint-disable-line no-console
-            // Load the index.html of the app.
-            mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-            // mainWindow.webContents.openDevTools()
-
-            // Emitted when the window is closed.
-            mainWindow.on(EVENTS.ELECTRON.CLOSED, () => { mainWindow = null; });
-        })
-        .catch(error => app.emit(EVENTS.FILEPIE.OS_NOT_SUPPORTED, error));
+    mainWindow.loadURL(`file://${__dirname}/../view/index.html`);
+    mainWindow.webContents.openDevTools();
+    mainWindow.on(EVENTS.ELECTRON.CLOSED, () => { mainWindow = null; });
+    mainWindow.webContents.on(EVENTS.WEBCONTENT.DID_FINISH_LOAD, loadDriveList);
 });
 
 app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (error) => {
