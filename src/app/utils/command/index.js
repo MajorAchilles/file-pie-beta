@@ -18,10 +18,10 @@ const {
  */
 const execute = (command) => {
     switch (process.platform) {
-        case OS.WINDOWS:
-            return runCommand(windowsCommands[command]); // eslint-disable-line
-        case OS.LINUX:
-            return runCommand(linuxCommands[command]);
+        // case OS.WINDOWS:
+            // return runCommand(windowsCommands[command]); // eslint-disable-line
+        // case OS.LINUX:
+            // return runCommand(linuxCommands[command]);
         default:
             return Promise.reject(new Error(i18n.app.errors.SYSTEM_NOT_SUPPORTED));
     }

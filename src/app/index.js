@@ -37,7 +37,7 @@ app.on(EVENTS.ELECTRON.READY, () => {
     mainWindow.webContents.on(EVENTS.WEBCONTENT.DID_FINISH_LOAD, loadDriveList);
 });
 
-app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (event, errorObject) => {
+app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (errorObject) => {
     mainWindow.webContents.send(EVENTS.FILEPIE.SHOW_ERROR_DIALOG, {
         title: i18n.app.components.dialog.TITLE_UNSUPPORTED_OS,
         message: errorObject.message,
@@ -46,6 +46,5 @@ app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (event, errorObject) => {
 });
 
 ipcMain.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED_ACCEPTED, () => {
-    console.log("ACCEPTED DIALOG CLOSING");
     process.exit(1);
 });
