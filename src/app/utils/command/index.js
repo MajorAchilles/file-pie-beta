@@ -3,7 +3,7 @@ const { runCommand } = require("./runCommand");
 const CONSTANTS = require("../../constants");
 const windowsCommands = require("./windowsCommands");
 const linuxCommands = require("./linuxCommands");
-const i18n = require("../../i18n/locale-en");
+const i18n = require("../../i18n");
 
 const {
     ENUMS: {

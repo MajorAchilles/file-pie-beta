@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const i18n = require("../../i18n/locale-en");
+const i18n = require("../../i18n");
 
 /**
  * This function runs the given command as a child process that returns a buffer

@@ -18,7 +18,9 @@ const WEBCONTENT = {
  */
 const FILEPIE = {
     OS_NOT_SUPPORTED: "FilePie::Events::OsNotSupported",
-    DRIVE_LIST_RECEIVED: "FilePie::Events::DriveListReceived"
+    OS_NOT_SUPPORTED_ACCEPTED: "FilePie::Events::OsNotSupportedAccepted",
+    DRIVE_LIST_RECEIVED: "FilePie::Events::DriveListReceived",
+    SHOW_ERROR_DIALOG: "FilePie::Events::ErrorDialog"
 };
 
 module.exports = {

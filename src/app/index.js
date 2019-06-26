@@ -1,9 +1,11 @@
 const electron = require("electron"); // eslint-disable-line import/no-unresolved
 const { list } = require("./utils/getDriveList");
 const EVENTS = require("./constants/events");
+const i18n = require("./i18n");
 
 const {
     app,
+    ipcMain,
     BrowserWindow
 } = electron;
 
@@ -35,12 +37,15 @@ app.on(EVENTS.ELECTRON.READY, () => {
     mainWindow.webContents.on(EVENTS.WEBCONTENT.DID_FINISH_LOAD, loadDriveList);
 });
 
-app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (error) => {
-    const messageBoxOptions = {
-        type: "error",
-        title: "System Error",
-        message: error.message
-    };
-    electron.dialog.showMessageBox(messageBoxOptions);
+app.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED, (event, errorObject) => {
+    mainWindow.webContents.send(EVENTS.FILEPIE.SHOW_ERROR_DIALOG, {
+        title: i18n.app.components.dialog.TITLE_UNSUPPORTED_OS,
+        message: errorObject.message,
+        closeEvent: EVENTS.FILEPIE.OS_NOT_SUPPORTED_ACCEPTED
+    });
+});
+
+ipcMain.on(EVENTS.FILEPIE.OS_NOT_SUPPORTED_ACCEPTED, () => {
+    console.log("ACCEPTED DIALOG CLOSING");
     process.exit(1);
 });
